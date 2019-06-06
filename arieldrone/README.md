@@ -1,10 +1,3 @@
-# Caltech Samaritan
-
-Autonomous SLAM & exploration using drones, a project for Caltech's *ME 134
-Autonomy* class.
-[`CS134_Final_Project_Report.pdf`](./CS134_Final_Project_Report.pdf) contains a
-detailed description of the project and the approach used. This repository can
-be cloned as a ROS package.
 
 # Demo
 
@@ -76,5 +69,3 @@ packages are required:
    Second, start the hover script using `rosrun arieldrone force_hover.py`. Now you can issue "2D Nav Goals"
    using rviz interface to see the navigation stack in action.
 8. Start the exploration script with `rosrun arieldrone start_exploration.py`.
-9. ???
-10. Profit!
