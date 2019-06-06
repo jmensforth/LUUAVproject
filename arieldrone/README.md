@@ -1,15 +1,3 @@
-
-# Demo
-
-There are two videos showing the whole setup in action: [exploring indoor
-environment](https://www.youtube.com/watch?v=5fQLEVJwjwE) and [exploring
-outdoor environment](https://www.youtube.com/watch?v=hfpO-X9Q2aM).  Images of
-the final 3D occupancy grid can be seen below.
-
-Indoor environment             |  Outdoor environment
-:-------------------------:|:-------------------------:
-![3D occupancy grid of an indoor environemnt](./demo/indoor_eig.jpg)  |  ![3D occupancy grid of an outdoor environemnt](./demo/outdoor_eig.jpg)
-
 # Prerequisites
 
 This project was developed for ROS Kinetic (Ubuntu 16.04). The following
