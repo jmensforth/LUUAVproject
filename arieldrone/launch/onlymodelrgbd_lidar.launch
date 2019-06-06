@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <rosparam param="use_sim_time">true</rosparam>
+
+    <!-- Start Gazebo with wg world running in (max) realtime -->
+    <include file="$(find hector_gazebo_worlds)/launch/start.launch">
+        <arg name="gui" value="true"/>
+        <arg name="world" value="$(find arieldrone)/worlds/small_indoor_scenario.world"/>
+    </include>
+
+    <!-- Spawn simulated quadrotor uav -->
+    <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor_with_asus_with_hokuyo_utm30lx.launch"/>
+
+
+
+
+
+</launch>

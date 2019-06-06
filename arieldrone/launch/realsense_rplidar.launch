@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+
+<!-- This is the launch file used for the testing of different SLAM algorithms, it contains several features required for the LUUAV to launch successfully including:
+ - The world environment model
+ - The vehicle description model
+ - Launching the world model in Gazebo
+ - Launching a preconfigured RViz display
+ - Selecting the SLAM algorithm to launch
+ - Commencing the navigation stack
+ -->
+
+<launch>
+ 
+<!-- Start Gazebo environment with the world of choice running in realtime (Max speed). As Gazebo is not necessary for algorithm testing, and computationally demanding, use the "gui" argument to true/false to enable/disable respectively. -->
+
+    <rosparam param="use_sim_time">true</rosparam>
+  
+    <include file="$(find hector_gazebo_worlds)/launch/start.launch">
+        <arg name="gui" value="false"/>
+        <arg name="world" value="$(find arieldrone)/worlds/small_indoor_scenario.world"/>
+    </include>
+
+<!-- Spawns the simulated quadrotor uav, in this case the quadrotor equipped with realsense camera and rplidar-->
+
+    <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor_with_realsense_rplidar.launch"/>
+
+<!-- Activate the quadrotor motors, not essential but is a convenience when running regularly to have this pre-enabled. -->
+
+    <node pkg="rosservice" type="rosservice" name="motors_activator"
+          args="call --wait /enable_motors &quot;enable: true&quot;"/>
+
+<!-- Start rviz visualization with preset config -->
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find arieldrone)/rviz/depth_slam_octomap.rviz"/>
+
+//****************************************************************************************//
+   <!-- This section is dedicated to enabling the desired SLAM algorithm, the launch files included here activate Octomap, HectorSLAM, Gmapping, RTAB, ORBSLAM2 respectively. Using comments, remove the undesired SLAM algorithms, leaving the desired uncommented-->
+
+    <!-- Octomapping - Starts OctoMap server to generate voxel occupancy grid and a projected 2d occupancy grid -->
+    <include file="$(find arieldrone)/launch/octomap_server.launch"/>
+
+    <!-- HectorSLAM --> 
+<!--  <include file="$(find arieldrone)/SLAM/hector.launch">
+     <arg name="odom_frame" value="world"/>
+     </include> -->
+
+    <!-- GMapping -->
+<!--  <include file="$(find arieldrone)/SLAM/Gmapping.launch">
+     <arg name="odom_frame" value="world"/>
+     </include> -->
+
+    <!-- RTAB  -->
+<!--  <include file="$(find arieldrone)/SLAM/RTAB.launch">
+     <arg name="odom_frame" value="world"/>
+     </include> -->
+
+    <!-- ORBSLAM2 -->
+<!--  <include file="$(find arieldrone)/SLAM/ORBSLAM2.launch">
+     <arg name="odom_frame" value="world"/>
+     </include> -->
+
+
+//***************************************************************************************//
+ <!-- This section launches the navigation algorithm of choice, this is required to send 2D pose navigation goals. Included is the default ROS navigation stack and the Hector Navigation launch. Also included here is the launch command for the exploration node, comment this launch out depending on the required function for the quadrotor-->
+    
+<!-- Navigation stack launch, default in ROS -->
+    <include file="$(find arieldrone)/launch/navigation.launch"/>
+
+<!-- Hector Navigation launch -->
+<!-- <include file="$(find arieldrone)/launch/hectornavigation.launch"/> -->
+
+<!-- Exploration Node launch -->
+<!-- <node pkg="arieldrone" name="start_exploration" type="start_exploration.py" output="screen"> </node> -->
+
+<!-- Hector Exploration Node launch -->
+<!-- <include file="$(find arieldrone)/launch/hectorexploration.launch"/> -->
+
+
+//**************************************************************************************//
+<!-- Starts the GeoTIFF mapper, this is the method used to save 2D occupancy maps to the device. -->
+<!--  <include file="$(find hector_geotiff)/launch/geotiff_mapper.launch">
+    <arg name="trajectory_publish_rate" value="4"/>
+  </include> -->
+</launch>
