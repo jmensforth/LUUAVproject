@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<robot name="quadrotor" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="M_PI" value="3.1415926535897931" />
+
+    <!-- Included URDF Files -->
+    <xacro:include filename="$(find hector_quadrotor_description)/urdf/quadrotor_base.urdf.xacro" />
+
+    <!-- Instantiate quadrotor_base_macro once (This is a bare model with no sensors) -->
+    <xacro:quadrotor_base_macro />
+
+    <!-- Realsense r200 camera urdf file for RGBD  -->
+    <xacro:include filename="$(find hector_sensors_description)/urdf/realsense_camera.urdf.xacro" />
+    <xacro:sensor_r200 name="camera" parent="base_link">
+      <origin xyz="0.05 0.0 -0.06" rpy="0 0 0"/>
+    </xacro:sensor_r200>
+
+
+    <!-- RPLidar mounted upside down below the quadrotor body -->
+    <xacro:include filename="$(find hector_sensors_description)/urdf/rplidar.urdf.xacro" />
+    <xacro:rplidar name="laser0" parent="base_link" ros_topic="scan" update_rate="40" ray_count="1081" min_angle="-135" max_angle="135">
+      <origin xyz="0.0 0.0 -0.097" rpy="${M_PI} 0 0"/>
+    </xacro:rplidar>
+</robot>
